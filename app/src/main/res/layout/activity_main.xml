@@ -21,7 +21,10 @@
         android:id="@+id/btNav"
         android:layout_width="412dp"
         android:layout_height="62dp"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/botton_nav_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
