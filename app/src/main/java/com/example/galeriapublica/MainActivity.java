@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.Manifest;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -42,40 +43,42 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-            //obtendo referências
-            final MainViewModel vm = new ViewModelProvider(this).get(MainViewModel.class);
 
-            //setando a função de "escutador" para selecionar o item que foi clicado
-            bottomNavigationView = findViewById(R.id.btNav);
-            bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        //obtendo referências
+        final MainViewModel vm = new ViewModelProvider(this).get(MainViewModel.class);
 
-                    //guardando o item que foi escolhido anteriormente dentro do MainViewModel
-                    vm.setNavigationOpSelected(item.getItemId());
+        //setando a função de "escutador" para selecionar o item que foi clicado
+        bottomNavigationView = findViewById(R.id.btNav);
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                    //definindo as ações que serão realizadas para cada opção
-                    switch (item.getItemId()) {
-                        case R.id.gridViewOp:
-                            GridViewFragment gridViewFragment = GridViewFragment.newInstance();
-                            setFragment(gridViewFragment);
-                            break;
-                        case R.id.listViewOp:
-                            ListViewFragment listViewFragment = ListViewFragment.newInstance();
-                            setFragment(listViewFragment);
-                            break;
-                    }
-                    }
-                    return true;
+                //guardando o item que foi escolhido anteriormente dentro do MainViewModel
+                vm.setNavigationOpSelected(item.getItemId());
+
+                //definindo as ações que serão realizadas para cada opção
+                switch (item.getItemId()) {
+                    case R.id.gridViewOp:
+                        GridViewFragment gridViewFragment = GridViewFragment.newInstance();
+                        setFragment(gridViewFragment);
+                        break;
+                    case R.id.listViewOp:
+                        ListViewFragment listViewFragment = ListViewFragment.newInstance();
+                        setFragment(listViewFragment);
+                        break;
                 }
-            });
-        }
-    void setFragment (Fragment fragment)
+                return true;
+            }
+        });
+    }
+
+    void setFragment (Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragContainer, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
     //implementando o método onResume e dentro dele pedindo pela permissão de acesso de leitura ao armazenamento público
     @Override
     protected void onResume() {
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         checkForPermissions(permissions);
     }
+
     private void checkForPermissions(List<String> permissions) {
         List<String> permissionsNotGranted = new ArrayList<>();
         for(String permission : permissions) {
